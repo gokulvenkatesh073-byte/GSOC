@@ -1,0 +1,37 @@
+import requests  # This tool lets python 'surf the web'
+import datetime  # To convert computer time to human time
+
+# This is a free link provided by OpenNotify to get the Space Station's location
+URL = "http://api.open-notify.org/iss-now.json"
+
+def locate_iss():
+    print("📡 Contacting the Space Station...")
+    
+    # 1. Send a request to the URL (like refreshing a webpage)
+    response = requests.get(URL)
+    
+    # 2. Always check if the website replied with "200 OK"
+    if response.status_code == 200:
+        data = response.json()  # Convert the messy text into a Python dictionary
+        
+        # 3. Extract the specific data we want
+        latitude = data['iss_position']['latitude']
+        longitude = data['iss_position']['longitude']
+        timestamp = data['timestamp']
+        
+        # 4. Make it readable for humans
+        human_time = datetime.datetime.fromtimestamp(timestamp)
+        
+        print(f"\n🚀 ISS LOCATION REPORT")
+        print(f"------------------------")
+        print(f"🕒 Time: {human_time}")
+        print(f"🌍 Lat:  {latitude}")
+        print(f"🌎 Long: {longitude}")
+        print(f"------------------------")
+        print(f"🔗 Google Maps Link: https://www.google.com/maps/place/{latitude},{longitude}")
+        
+    else:
+        print("❌ Error: Could not connect to the satellite.")
+
+if __name__ == "__main__":
+    locate_iss()
